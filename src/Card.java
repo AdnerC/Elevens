@@ -124,4 +124,15 @@ public class Card {
 
     }
 
+    public static int getIntegerValue(Card card){
+        if(card.getValue().toLowerCase().equals(card.getValue())){
+            return (Integer.parseInt(card.getValue()));
+        }
+        if(card.getValue().equals("A")){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
+
 }

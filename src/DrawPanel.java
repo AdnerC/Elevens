@@ -14,12 +14,15 @@ class DrawPanel extends JPanel implements MouseListener {
     //Represents a rectangle and can detect when clicked
     private Rectangle button;
     int count;
+    private ArrayList<Card> highlights;
+
 
     public DrawPanel() {
         button = new Rectangle(77, 330, 160, 26);
         this.addMouseListener(this);
         hand = Card.buildHand();
         count=0;
+        highlights = new ArrayList<Card>();
     }
 
     protected void paintComponent(Graphics g) {
@@ -52,12 +55,14 @@ class DrawPanel extends JPanel implements MouseListener {
 
     public void mousePressed(MouseEvent e) {
 
+
         Point clicked = e.getPoint();
         //Left click
         if (e.getButton() == 1) {
             //if the click occurred in the rectangle
             if (button.contains(clicked)) {
                 hand = Card.buildHand();
+                highlights.clear();
             }
             //checks all the cards to see if they were clicked, if so flip them
             for (int i = 0; i < hand.size(); i++) {
@@ -74,19 +79,26 @@ class DrawPanel extends JPanel implements MouseListener {
                 Rectangle box = hand.get(i).getCardBox();
                 if (box.contains(clicked)) {
                     if(hand.get(i).getHighlight()){
+                        int ind = highlights.indexOf(hand.get(i));
+
                         hand.get(i).replaceCard(hand, hand.get(i));
                         hand.get(i).flipHighlight();
-                    }else{
-                        count++;
+                        highlights.remove(ind);
+
+                    }else  {
+                        highlights.add(hand.get(i));
+
+
                     }
                     hand.get(i).flipHighlight();
+                    System.out.println(highlights.toString());
                 }
             }
-            if(count==2){
 
-                System.out.println("calc now");
-
-                count = 0;
+            if(highlights.size()==2){
+                if(Card.getIntegerValue(highlights.getFirst())+Card.getIntegerValue(highlights.getLast())==11){
+                    System.out.println("ELEVEN");
+                }
             }
 
         }
