@@ -15,12 +15,16 @@ class DrawPanel extends JPanel implements MouseListener {
     private Rectangle button;
     int count;
     private ArrayList<Card> highlights;
+    static private ArrayList<Card> deck;
 
 
     public DrawPanel() {
         button = new Rectangle(77, 330, 160, 26);
         this.addMouseListener(this);
-        hand = Card.buildHand();
+        deck = Card.buildDeck(deck);
+        System.out.println(deck.toString());
+        hand = Card.buildHand(deck);
+        System.out.println(1);
         count=0;
         highlights = new ArrayList<Card>();
     }
@@ -61,7 +65,7 @@ class DrawPanel extends JPanel implements MouseListener {
         if (e.getButton() == 1) {
             //if the click occurred in the rectangle
             if (button.contains(clicked)) {
-                hand = Card.buildHand();
+                hand = Card.buildHand(deck);
                 highlights.clear();
             }
             //checks all the cards to see if they were clicked, if so flip them
@@ -81,7 +85,7 @@ class DrawPanel extends JPanel implements MouseListener {
                     if(hand.get(i).getHighlight()){
                         int ind = highlights.indexOf(hand.get(i));
 
-                        hand.get(i).replaceCard(hand, hand.get(i));
+                        hand.get(i).replaceCard(hand, hand.get(i), deck);
                         hand.get(i).flipHighlight();
                         highlights.remove(ind);
 
@@ -97,8 +101,39 @@ class DrawPanel extends JPanel implements MouseListener {
 
             if(highlights.size()==2){
                 if(Card.getIntegerValue(highlights.getFirst())+Card.getIntegerValue(highlights.getLast())==11){
+                    Card.replaceCard(hand, highlights.getFirst(), deck);
+                    Card.replaceCard(hand, highlights.get(1),deck);
+                    highlights.clear();
                     System.out.println("ELEVEN");
                 }
+            }
+
+            if(highlights.size()==3){
+                boolean hasJ =false;
+                boolean hasQ =false;
+                boolean hasK =false;
+                for(Card card : highlights){
+                    if(card.getValue().equals("K")){
+                        hasK=true;
+                    }
+                    if(card.getValue().equals("Q")){
+                        hasQ=true;
+                    }
+                    if(card.getValue().equals("J")){
+                        hasJ=true;
+                    }
+
+                }
+
+                if(hasK&&hasQ&&hasJ){
+                    Card.replaceCard(hand, highlights.getFirst(), deck);
+                    Card.replaceCard(hand, highlights.get(1),deck);
+                    Card.replaceCard(hand, highlights.get(2),deck);
+                    highlights.clear();
+
+                }
+
+
             }
 
         }

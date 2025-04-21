@@ -16,6 +16,7 @@ public class Card {
     private boolean highlight;
 
 
+
     public Card(String suit, String value) {
         this.suit = suit;
         this.value = value;
@@ -89,8 +90,7 @@ public class Card {
         }
     }
 
-    public static ArrayList<Card> buildDeck() {
-        ArrayList<Card> deck = new ArrayList<Card>();
+    public static ArrayList<Card> buildDeck(ArrayList<Card>deck) {
 
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
         String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
@@ -103,8 +103,7 @@ public class Card {
         return deck;
     }
 
-    public static ArrayList<Card> buildHand() {
-        ArrayList<Card> deck = Card.buildDeck();
+    public static ArrayList<Card> buildHand(ArrayList<Card> deck) {
         ArrayList<Card> hand = new ArrayList<Card>();
         for (int i = 0; i < 9; i++) {
             int r = (int)(Math.random()*deck.size());
@@ -114,8 +113,8 @@ public class Card {
         return hand;
     }
 
-    public static void replaceCard( ArrayList<Card> hand, Card card) {
-        ArrayList<Card> deck = Card.buildDeck();
+    public static void replaceCard( ArrayList<Card> hand, Card card, ArrayList<Card> deck) {
+
         int index = hand.indexOf(card);
         hand.remove(card);
         int r = (int)(Math.random()*deck.size());
@@ -134,5 +133,7 @@ public class Card {
             return 0;
         }
     }
+
+
 
 }
