@@ -1,13 +1,10 @@
+import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.Point;
 import java.util.ArrayList;
-import java.awt.Font;
 
-class DrawPanel extends JPanel implements MouseListener {
+class  DrawPanel extends JPanel implements MouseListener {
 
     private ArrayList<Card> hand;
 
@@ -16,9 +13,11 @@ class DrawPanel extends JPanel implements MouseListener {
     int count;
     private ArrayList<Card> highlights;
     static private ArrayList<Card> deck;
+    static boolean won;
 
 
     public DrawPanel() {
+        won = false;
         deck = new ArrayList<Card>();
         button = new Rectangle(77, 330, 160, 26);
         this.addMouseListener(this);
@@ -54,6 +53,38 @@ class DrawPanel extends JPanel implements MouseListener {
         g.setFont(new Font("Courier New", Font.BOLD, 20));
         g.drawString("GET NEW CARDS", 80, 350);
         g.drawString("GET NEW CARDS", 80, 350);
+        g.drawString("Cards left in deck: "+ deck.size(), 80, 390);
+
+        if(won){
+            g.setColor(Color.yellow);
+
+            g.drawString("YOU WON", 80, 200);
+
+        }
+
+        boolean possible=false;
+
+        for(Card card : hand){
+            if((!card.getValue().equals("K"))||(!card.getValue().equals("Q"))||(!card.getValue().equals("J"))) {
+                for (Card card1 : hand) {
+                    if (Card.getIntegerValue(card) + Card.getIntegerValue(card1) == 11) {
+                        possible = true;
+                    }
+
+                }
+            }else {
+                if(hand.toString().contains("K")&&hand.toString().contains("Q")&&hand.toString().contains("J")){
+                    possible=true;
+                }
+            }
+        }
+
+        if(!possible){
+            g.setColor(Color.red);
+            g.drawString("YOU LOSE!", 80, 200);
+
+        }
+
 
         g.drawRect((int)button.getX(), (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
     }
@@ -86,7 +117,8 @@ class DrawPanel extends JPanel implements MouseListener {
                     if(hand.get(i).getHighlight()){
                         int ind = highlights.indexOf(hand.get(i));
 
-                        hand.get(i).replaceCard(hand, hand.get(i), deck);
+//                        hand.get(i).replaceCard(hand, hand.get(i), deck);
+
                         hand.get(i).flipHighlight();
                         highlights.remove(ind);
 
@@ -136,6 +168,11 @@ class DrawPanel extends JPanel implements MouseListener {
 
 
             }
+
+            if(deck.size()==0 ){
+                won =true;
+            }
+
 
         }
 
