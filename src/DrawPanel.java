@@ -19,6 +19,7 @@ class DrawPanel extends JPanel implements MouseListener {
 
 
     public DrawPanel() {
+        deck = new ArrayList<Card>();
         button = new Rectangle(77, 330, 160, 26);
         this.addMouseListener(this);
         deck = Card.buildDeck(deck);

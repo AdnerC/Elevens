@@ -90,7 +90,7 @@ public class Card {
         }
     }
 
-    public static ArrayList<Card> buildDeck(ArrayList<Card>deck) {
+    public static ArrayList<Card> buildDeck(ArrayList<Card> deck) {
 
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
         String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
